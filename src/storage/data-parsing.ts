@@ -1,27 +1,41 @@
 import type { EventTypes } from "@/network/events.js"
 import { ulid } from "ulid"
 
+interface DecodedData {
+  id: string;
+  eventType: string;
+  topic: string;
+  data: string;
+  clientId: string;
+}
+
+const maxDataSize = 2 ** 32 //32 
 const idLength = 32
 const eventTypeLength = 20
 const topicMaxLength = 20
+export const sizeHeaderLength = String(maxDataSize).length
 
 
 export function encodeMessage(id: string, eventType: EventTypes, clientId: string, topic: string, contents: string) {
-  return `${id.padEnd(idLength)}${clientId.padEnd(idLength)}${eventType.padEnd(eventTypeLength)}${topic.padEnd(topicMaxLength)}${contents}`
+  const totalLength = String(sizeHeaderLength + (idLength * 2) + eventTypeLength + topicMaxLength + contents.length);
+  return `${totalLength.padEnd(sizeHeaderLength)}${id.padEnd(idLength)}${clientId.padEnd(idLength)}${eventType.padEnd(eventTypeLength)}${topic.padEnd(topicMaxLength)}${contents}`
 }
 
-export function decodeMessage(rawData: string) {
-  const minLength = eventTypeLength + topicMaxLength + idLength //16 is standard length for ulid
+export function parseData(rawData: string) {
+  const minLength = sizeHeaderLength + eventTypeLength + topicMaxLength + idLength * 2 //16 is standard length for ulid
   if (rawData.length < minLength) {
     throw "Invalid data, expected minimum length is: " + minLength
   }
 
-  const clientIdLimit = idLength * 2
-  const eventTypeLimit = eventTypeLength + clientIdLimit
-  const topicLimit = eventTypeLength + (idLength * 2) + topicMaxLength
+  const messageHeaderLimit = sizeHeaderLength;
+  const idLimit = messageHeaderLimit + idLength
+  const clientIdLimit = idLimit + idLength
+  const eventTypeLimit = clientIdLimit + eventTypeLength
+  const topicLimit = eventTypeLimit + topicMaxLength
 
-  const id = rawData.slice(0, idLength).trim()
-  const clientId = rawData.slice(idLength, clientIdLimit).trim()
+  // const initialSize = rawData.slice(0, sizeHeaderLength)
+  const id = rawData.slice(messageHeaderLimit, idLimit).trim()
+  const clientId = rawData.slice(idLimit, clientIdLimit).trim()
   const eventType = rawData.slice(clientIdLimit, eventTypeLimit).trim()
   const topic = rawData.slice(eventTypeLimit, topicLimit).trim()
   const data = rawData.slice(eventTypeLimit + eventTypeLength).trim()
@@ -29,4 +43,20 @@ export function decodeMessage(rawData: string) {
   return ({
     id, eventType, topic, data, clientId
   })
+}
+
+export function decodeMessage(rawData: string): Array<DecodedData> {
+  const dataFrameLength = Number(rawData.slice(0, sizeHeaderLength))
+  if (rawData.length == 0) {
+    return []
+  }
+
+  const currentRawData = rawData.slice(0, dataFrameLength)
+  const remainingRawData = rawData.slice(dataFrameLength)
+  const data = parseData(currentRawData)
+  return [
+    data,
+    ...decodeMessage(remainingRawData)
+  ]
+
 }

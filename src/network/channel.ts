@@ -2,6 +2,7 @@ import { encodeMessage } from "@/storage/data-parsing.js"
 import type { Message } from "@/storage/runtime-data.js"
 import type { Socket } from "node:net"
 import { EventTypes } from "./events.js"
+import { ulid } from "ulid"
 
 
 /** 
@@ -71,6 +72,7 @@ export const broadCastMessages = (messages: Message[] | Message, topic: string) 
 export const sendMessages = (messages: Message[] | Message, clients: Socket[]) => {
   for (const client of clients) {
     if (Array.isArray(messages)) {
+      console.log("Message is an array", messages)
       messages.forEach(message => {
         client.write(encodeMessage(message.id,
           EventTypes.RECIEVE_BROADCAST,
@@ -79,8 +81,9 @@ export const sendMessages = (messages: Message[] | Message, clients: Socket[]) =
           message.contents
         ))
       })
+
     } else {
-      const message = messages
+      const message = messages;
       client.write(encodeMessage(message.id,
         EventTypes.RECIEVE_BROADCAST,
         message.senderId,

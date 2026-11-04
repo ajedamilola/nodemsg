@@ -3,4 +3,9 @@
 - Authentication
 - Data encryption
 - Persistent Storage
-- Letting actual get message work
+✔ Letting actual get message work @done(26-11-04 12:57)
+- =====FIX==== the joint messaging inst still fixed
+- External host support
+- UDP support
+
+Write your experience and tips for making custom communication protocols

@@ -16,3 +16,19 @@ export function insertRuntimeMessage(newMessage: Message) {
   topics[topic] = [newMessage]
   return newMessage
 }
+
+interface PaginationOptions {
+  limit: number | undefined
+  offset: number | undefined
+}
+
+export function getRuntimeMessages(topic: string, paginator: PaginationOptions): Message[] {
+  const messages = topics[topic];
+  if (messages == null) {
+    return []
+  } else {
+    const start = (paginator?.offset || 1) - 1;
+    const end = start + (paginator.limit || 20)
+    return messages.slice(start, end)
+  }
+}

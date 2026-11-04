@@ -57,8 +57,8 @@ const opts = program.commands.find(c => c.name() === currentCommand)!.opts()
 export const port = opts.port as number
 export const topic = opts.topic as string | undefined
 export const content = opts.content as string | undefined
-export const offset = opts.offser as string | undefined
-export const limit = opts.limit as string | undefined
+export const offset = opts.offset as number | undefined
+export const limit = opts.limit as number | undefined
 export const listen = opts.listen as boolean
 
 export { currentCommand as command }
