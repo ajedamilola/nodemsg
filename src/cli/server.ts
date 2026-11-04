@@ -9,7 +9,7 @@ import { getRuntimeMessages, insertRuntimeMessage, type Message } from "@/storag
 import { addListener, broadCastMessages, clientMap, listeners, removeListener, sendMessages } from "@/network/channel.js";
 
 async function handleServer() {
-  await TCP.startServer(port, (socket: Socket) => {
+  TCP.startServer(port, (socket: Socket) => {
     socket.on("data", (buffer) => {
       const rawData = buffer.toString()
       const decodedDatas = decodeMessage(rawData)
