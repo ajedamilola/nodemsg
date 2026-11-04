@@ -1,0 +1,6 @@
+- Ability to listen to multiple topics
+- Timestamp messages
+- Authentication
+- Data encryption
+- Persistent Storage
+- Letting actual get message work
