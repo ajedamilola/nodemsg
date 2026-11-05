@@ -1,12 +1,12 @@
 {
-  "name": "@ajedamilola/nodemsg",
-  "version": "1.0.1",
+  "name": "nodemsg",
+  "version": "1.0.0",
   "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "build": "tsc && tsc-alias",
-    "prepare": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +20,7 @@
     "dist"
   ],
   "bin": {
-    "nodemsg": "./dist/cli/index.js",
-    "prepublishOnly": "npm run build"
+    "nodemsg": "./dist/cli/index.js"
   },
   "dependencies": {
     "commander": "^15.0.0",
