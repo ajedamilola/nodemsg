@@ -2,7 +2,8 @@ export interface Message {
   topic: string,
   id: string,
   senderId: string,
-  contents: string
+  contents: string,
+  timeStamp: string
 }
 //Actual runtime store of topics
 const topics: { [key: string]: Message[] } = {}

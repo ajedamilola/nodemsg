@@ -21,7 +21,8 @@ async function handleServer() {
               contents: data.data,
               id: data.id,
               senderId: data.clientId,
-              topic: data.topic
+              topic: data.topic,
+              timeStamp: data.timeStamp
             })
             broadCastMessages(newMessage, data.topic)
             break;
@@ -33,7 +34,8 @@ async function handleServer() {
               contents: JSON.stringify({ listeners, clientMap }),
               id: ulid(),
               senderId: "",
-              topic: "server"
+              topic: "server",
+              timeStamp: String(Number(new Date()))
             }
             sendMessages(statusMessage, [socket])
             break
@@ -43,6 +45,7 @@ async function handleServer() {
               limit: paginationParams.limit,
               offset: paginationParams.offset
             })
+            console.log({ fetchedMessages })
             sendMessages(fetchedMessages, [socket])
 
             break

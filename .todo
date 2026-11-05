@@ -1,11 +1,12 @@
 - Ability to listen to multiple topics
-- Timestamp messages
+✔ Timestamp messages Still neeeds work
 - Authentication
 - Data encryption
-- Persistent Storage
+- persistent Storage
 ✔ Letting actual get message work @done(26-11-04 12:57)
-- =====FIX==== the joint messaging inst still fixed
+✔ the joint messaging isnt still fixed
 - External host support
 - UDP support
+- Runtime Deleting of Messages
 
 Write your experience and tips for making custom communication protocols
