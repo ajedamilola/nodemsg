@@ -1,6 +1,6 @@
 import TCP from "@/network/tcp.js";
-import { port, topic, limit, offset } from "@/storage/env.js";
-import { die } from "./utils.js";
+import { port, topic, limit, offset } from "@/cli/entrypoint.js";
+import { die, silentLog } from "./utils.js";
 import { EventTypes } from "@/network/events.js";
 import type { Socket } from "node:net";
 import { decodeMessage, sizeHeaderLength } from "@/storage/data-parsing.js";
@@ -45,7 +45,6 @@ async function handleServer() {
               limit: paginationParams.limit,
               offset: paginationParams.offset
             })
-            console.log({ fetchedMessages })
             sendMessages(fetchedMessages, [socket])
 
             break

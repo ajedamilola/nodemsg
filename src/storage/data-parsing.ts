@@ -25,7 +25,6 @@ export function encodeMessage(id: string, eventType: EventTypes, clientId: strin
 }
 
 export function parseData(rawData: string) {
-  console.log(rawData)
   const minLength = sizeHeaderLength + eventTypeLength + topicMaxLength + idLength * 2 //16 is standard length for ulid
   if (rawData.length < minLength) {
     throw "Invalid data, expected minimum length is: " + minLength

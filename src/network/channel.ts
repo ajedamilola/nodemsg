@@ -72,7 +72,6 @@ export const broadCastMessages = (messages: Message[] | Message, topic: string) 
 export const sendMessages = (messages: Message[] | Message, clients: Socket[]) => {
   for (const client of clients) {
     if (Array.isArray(messages)) {
-      console.log("Message is an array", messages)
       messages.forEach(message => {
         client.write(encodeMessage(message.id,
           EventTypes.RECIEVE_BROADCAST,

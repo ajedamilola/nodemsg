@@ -29,23 +29,29 @@ program
   .command('start-server')
   .description('start the server')
   .option('-p, --port <port>', 'port to listen on', parsePort, DEFAULT_PORT)
+  .option('-h, --host <host>', 'Host address to listen on. use 0.0.0.0 for external access', "127.0.0.1")
+  .option('-v, --verbose', 'Turn on for verbosity (for debugging purposes)', false)
 
 program
   .command('get-messages')
   .description('get messages from a topic')
+  .option('-h, --host <host>', 'Host address to connect to', "127.0.0.1")
   .option('-p, --port <port>', 'server port', parsePort, DEFAULT_PORT)
   .requiredOption('-t, --topic <topic>', 'topic to read from')
   .option('--offset <n>', 'messages to skip', parseIntArg('offset', 1), 1)
   .option('--limit <n>', 'max messages to return', parseIntArg('limit', 1), 20)
   .option("--listen", "Listen for messages on a subscribed topic", false)
+  .option('-v, --verbose', 'Turn on for verbosity (for debugging purposes)', false)
 
 program
   .command('send-message')
   .description('send a message to a topic')
+  .option('-h, --host <host>', 'Host address to connect to', "127.0.0.1")
   .option('-p, --port <port>', 'server port', parsePort, DEFAULT_PORT)
   .requiredOption('-t, --topic <topic>', 'topic to publish to')
   .requiredOption('-c, --content <content>', 'message content')
   .option("--listen", "Listen for messages on a subscribed topic", false)
+  .option('-v, --verbose', 'Turn on for verbosity (for debugging purposes)', false)
 
 program.command("get-status")
   .option('-p, --port <port>', 'server port', parsePort, DEFAULT_PORT)
@@ -55,10 +61,12 @@ const currentCommand = program.args[0] as "start-server" | "get-messages" | "sen
 const opts = program.commands.find(c => c.name() === currentCommand)!.opts()
 
 export const port = opts.port as number
+export const host = opts.host as string
 export const topic = opts.topic as string | undefined
 export const content = opts.content as string | undefined
 export const offset = opts.offset as number | undefined
 export const limit = opts.limit as number | undefined
 export const listen = opts.listen as boolean
+export const verbose = opts.verbose as boolean
 
 export { currentCommand as command }

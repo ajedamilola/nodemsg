@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { command } from "@/storage/env.js";
+import { command } from "@/cli/entrypoint.js";
 import handleClient from "./client.js";
 import handleServer from "./server.js";
 

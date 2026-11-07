@@ -5,7 +5,8 @@
 - persistent Storage
 ✔ Letting actual get message work @done(26-11-04 12:57)
 ✔ the joint messaging isnt still fixed
-- External host support
+- External host support (Confirm and test this)
+- Better error handleing and better error messages
 - UDP support
 - Runtime Deleting of Messages
 
